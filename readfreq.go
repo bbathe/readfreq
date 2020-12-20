@@ -41,16 +41,16 @@ func readCIVMessageFromPort(p *serial.Port) ([]byte, error) {
 	}
 }
 
-// return amateur band corresponding to frequency
+// return US amateur band corresponding to frequency
 func bandFromFrequency(freq int) (int, error) {
 	switch {
-	case freq >= 1810000 && freq <= 2000000:
+	case freq >= 1800000 && freq <= 2000000:
 		return 160, nil
-	case freq >= 3500000 && freq <= 3800000:
+	case freq >= 3500000 && freq <= 4000000:
 		return 80, nil
 	case freq >= 5250000 && freq <= 5450000:
 		return 60, nil
-	case freq >= 7000000 && freq <= 7200000:
+	case freq >= 7000000 && freq <= 7300000:
 		return 40, nil
 	case freq >= 10100000 && freq <= 10150000:
 		return 30, nil
@@ -64,7 +64,7 @@ func bandFromFrequency(freq int) (int, error) {
 		return 12, nil
 	case freq >= 28000000 && freq <= 29700000:
 		return 10, nil
-	case freq >= 50000000 && freq <= 52000000:
+	case freq >= 50000000 && freq <= 54000000:
 		return 6, nil
 	}
 
@@ -72,30 +72,31 @@ func bandFromFrequency(freq int) (int, error) {
 }
 
 // return band codes as used by the KPA500
+// bcd array layout: [BIT 0, BIT 1, BIT 2, BIT 3]
 func bcdFromBand(band int) ([4]int, error) {
 	switch band {
 	case 160:
-		return [4]int{0, 0, 0, 1}, nil
+		return [4]int{1, 0, 0, 0}, nil
 	case 80:
-		return [4]int{0, 0, 1, 0}, nil
+		return [4]int{0, 1, 0, 0}, nil
 	case 60:
 		return [4]int{0, 0, 0, 0}, nil
 	case 40:
-		return [4]int{0, 0, 1, 1}, nil
+		return [4]int{1, 1, 0, 0}, nil
 	case 30:
-		return [4]int{0, 1, 0, 0}, nil
+		return [4]int{0, 0, 1, 0}, nil
 	case 20:
-		return [4]int{0, 1, 0, 1}, nil
+		return [4]int{1, 0, 1, 0}, nil
 	case 17:
 		return [4]int{0, 1, 1, 0}, nil
 	case 15:
-		return [4]int{0, 1, 1, 1}, nil
+		return [4]int{1, 1, 1, 0}, nil
 	case 12:
-		return [4]int{1, 0, 0, 0}, nil
+		return [4]int{0, 0, 0, 1}, nil
 	case 10:
 		return [4]int{1, 0, 0, 1}, nil
 	case 6:
-		return [4]int{1, 0, 1, 0}, nil
+		return [4]int{0, 1, 0, 1}, nil
 	}
 
 	return [4]int{1, 1, 1, 1}, errBand
