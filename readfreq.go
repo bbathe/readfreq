@@ -123,7 +123,7 @@ func main() {
 		}
 
 		// is it transfer operating frequency data?
-		if len(r) == 11 && r[2] == 0x00 && r[3] == 0x94 {
+		if len(r) == 11 && r[2] == 0x00 {
 			fmt.Printf("%X ", r)
 
 			// radio sends as least significant byte first, flip order of bytes
